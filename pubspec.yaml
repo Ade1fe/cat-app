@@ -1,0 +1,27 @@
+name: cat_shop
+description: "A new Flutter project."
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.5.4 <4.0.0"  # This ensures Dart SDK 3.5.4 compatibility
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_timer_countdown: ^1.0.7
+  cupertino_icons: ^1.0.8
+  loading_animation_widget: ^1.0.0  # Added version for the widget
+  shared_preferences: ^2.0.15  # Correct indentation
+  firebase_core: ^2.4.0
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/
