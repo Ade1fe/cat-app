@@ -1,10 +1,13 @@
+
 import 'package:flutter/material.dart';
 import 'package:cat_shop/theme/styles.dart';
+
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key, required this.fullName});
 
   final String fullName;
+
 
   @override
   Widget build(BuildContext context) {

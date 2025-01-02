@@ -1,4 +1,3 @@
-
 import 'package:cat_shop/theme/theme.dart';
 import 'package:flutter/material.dart';
 
@@ -9,8 +8,7 @@ class CustomInputField extends StatefulWidget {
   final FormFieldValidator<String>? validator;
   final bool isPasswordField;
   final bool obscureText;
-  final VoidCallback?
-      togglePasswordVisibility; 
+  final VoidCallback? togglePasswordVisibility;
   final Widget? suffixIcon;
 
   const CustomInputField({
@@ -20,7 +18,7 @@ class CustomInputField extends StatefulWidget {
     required this.prefixIcon,
     this.validator,
     this.isPasswordField = false,
-    this.obscureText = true, 
+    this.obscureText = true,
     this.togglePasswordVisibility,
     this.suffixIcon,
   });

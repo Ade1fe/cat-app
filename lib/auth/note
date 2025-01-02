@@ -1,0 +1,152 @@
+
+import 'dart:developer';
+import 'package:cat_shop/theme/theme.dart';
+import 'package:cat_shop/widgets/custom_button.dart';
+import 'package:cat_shop/widgets/custom_input_field.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
+
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController fullNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserDetails();
+  }
+
+  @override
+  void dispose() {
+    fullNameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  // Load user details from SharedPreferences
+  Future<void> _loadUserDetails() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? savedFullName = prefs.getString('fullName');
+
+    if (savedFullName != null) {
+      // Update the text controller and UI
+      setState(() {
+        fullNameController.text = savedFullName;
+      });
+      log('Loaded Full Name: $savedFullName');
+    } else {
+      log("No saved full name found");
+    }
+  }
+
+  // Save user details to SharedPreferences
+  Future<void> _saveUserDetails() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('fullName', fullNameController.text);
+    log('Full Name Saved: ${fullNameController.text}');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Sign Up')),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            children: [
+              const Text('Create an account ✨',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 8),
+              const Text('Welcome! Please create an account.',
+                  style: TextStyle(fontSize: 16, color: Colors.grey)),
+              const SizedBox(height: 30),
+              const Text('Name',
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 6),
+              CustomInputField(
+                controller: fullNameController,
+                hintText: 'Enter your Full Name',
+                prefixIcon: Icons.person,
+              ),
+              const SizedBox(height: 16),
+              const Text('Email',
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 6),
+              CustomInputField(
+                controller: emailController,
+                hintText: 'Enter your Email',
+                prefixIcon: Icons.email,
+              ),
+              const SizedBox(height: 16),
+              const Text('Password',
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 6),
+              CustomInputField(
+                controller: passwordController,
+                hintText: 'Enter your Password',
+                prefixIcon: Icons.lock,
+                isPasswordField: true,
+                obscureText: true,
+              ),
+              const SizedBox(height: 30),
+              if (fullNameController.text.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16.0),
+                  child: Text(
+                    'Hello, ${fullNameController.text}!',
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              CustomButton(
+                text: isLoading ? 'Loading...' : 'Sign Up',
+                onPressed: () async {
+                  if (_formKey.currentState?.validate() ?? false) {
+                    setState(() {
+                      isLoading = true;
+                    });
+                    await _saveUserDetails();
+                    setState(() {
+                      isLoading = false;
+                    });
+                  }
+                },
+                width: 200,
+                borderWidth: 2,
+                backgroundColor: Colors.black, textColor: Colors.white,
+                borderColor: ThemeClass.mainColor,
+                // isLoading: isLoading.value,
+              ),
+              const SizedBox(height: 20),
+              CustomButton(
+                text: 'Already have an account? Sign In',
+                onPressed: () {
+                  // Navigate to Sign In page
+                  log('Navigate to Sign In');
+                },
+                width: 200,
+                borderWidth: 2,
+                borderColor: ThemeClass.mainColor,
+                backgroundColor: Colors.black, textColor: Colors.white,
+                // isLoading: isLoading.value,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

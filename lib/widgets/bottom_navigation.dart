@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:cat_shop/screens/dashboard_screen.dart';
 import 'package:cat_shop/theme/theme.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:developer';
+
+import 'package:cat_shop/routes/route_names.dart';
 
 class BottomNavigationApp extends StatelessWidget {
   const BottomNavigationApp({super.key, required this.fullName});
@@ -43,12 +48,23 @@ class _BottomNavigationState extends State<BottomNavigation> {
     });
   }
 
+  Future<void> clearAllPreferences() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    log('All preferences have been cleared.');
+  }
+
+  void onLogout() async {
+    await clearAllPreferences();
+    Get.offAllNamed(RouteNames.signIn); 
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () {},
+          onPressed: onLogout,
           icon: const Icon(Icons.menu),
           iconSize: 30,
         ),

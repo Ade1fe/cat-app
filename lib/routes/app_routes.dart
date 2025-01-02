@@ -13,6 +13,7 @@ class AppRoutes {
       case RouteNames.signUp:
         return MaterialPageRoute(builder: (_) => const SignUpScreen());
       case RouteNames.signIn:
+        // return MaterialPageRoute(builder: (_) => const SignInScreen());
         return MaterialPageRoute(builder: (_) => const SignInScreen());
       case RouteNames.dashBoard:
         final fullName = settings.arguments as String;
